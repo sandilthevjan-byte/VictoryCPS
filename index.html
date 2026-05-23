@@ -1,250 +1,40 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>CPS Tester</title>
+  <meta charset="UTF-8">
+  <title>Victory Website</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       text-align: center;
+      background-color: #f4f4f4;
       margin: 0;
-      padding: 0;
-      background-color: black;
-      color: white;
-      overflow: hidden;
-    }
-    header {
-      background-color: #111;
       padding: 20px;
-      font-size: 24px;
-      font-weight: bold;
     }
-    #watermark {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 80px;
-      font-weight: bold;
-      color: rgba(255,255,255,0.1);
-      pointer-events: none;
-      z-index: -1;
+    h1 {
+      color: #333;
     }
-
-    #bloxdGoat {
-      font-size: 40px;
-      font-weight: bold;
-      color: #0ff;
-      text-shadow: 0 0 10px #0ff, 0 0 20px #00f;
-      margin-top: 20px;
-    }
-
-    /* Glowing Subscribe banner */
-    #subscribeBanner {
-      font-size: 36px;
-      font-weight: bold;
-      color: red;
-      text-shadow: 0 0 10px red, 0 0 20px orange, 0 0 30px yellow;
-      margin-top: 15px;
-      animation: pulse 1.5s infinite alternate;
-    }
-    @keyframes pulse {
-      from { transform: scale(1); }
-      to { transform: scale(1.1); }
-    }
-
-    .sword1 {
-      position: fixed;
-      top: 40%;
-      left: 5%;
-      width: 200px;
-      height: 200px;
-      background-image: url('bloxd.Png');
-      background-size: contain;
-      background-repeat: no-repeat;
-      animation: glow 2s infinite alternate;
-      z-index: -2;
-    }
-
-    .sword2 {
-      position: fixed;
-      top: 40%;
-      right: 5%;
-      width: 200px;
-      height: 200px;
-      background-image: url('bloxd1.png');
-      background-size: contain;
-      background-repeat: no-repeat;
-      animation: glow 3s infinite alternate;
-      z-index: -2;
-    }
-
-    @keyframes glow {
-      from { filter: drop-shadow(0 0 10px #0ff) drop-shadow(0 0 20px #00f); }
-      to { filter: drop-shadow(0 0 30px #0ff) drop-shadow(0 0 60px #00f); }
-    }
-
-    /* Vic.png logo styling */
-    #vicjrLogo {
-      margin-top: 20px;
-      width: 250px;
-      filter: drop-shadow(0 0 15px #0ff) drop-shadow(0 0 30px #00f);
-    }
-
-    #clickArea {
-      width: 300px;
-      height: 200px;
-      background-color: #222;
-      border: 2px solid #fff;
-      margin: 40px auto;
+    .images {
       display: flex;
-      align-items: center;
       justify-content: center;
-      cursor: pointer;
-      font-size: 20px;
-      font-weight: bold;
-      color: white;
+      gap: 20px;
+      margin-top: 30px;
     }
-    #results, #timer, #leaderboard {
-      margin-top: 20px;
-      font-size: 18px;
-    }
-    #restartBtn {
-      margin-top: 20px;
-      padding: 10px 20px;
-      font-size: 16px;
-      display: none;
-      cursor: pointer;
-      background-color: #444;
-      color: white;
-      border: 1px solid #fff;
-    }
-    #durationSelect {
-      margin-top: 20px;
-      font-size: 16px;
-      padding: 5px;
-      background-color: #222;
-      color: white;
-      border: 1px solid #fff;
+    .images img {
+      max-width: 200px;
+      border: 2px solid #333;
+      border-radius: 8px;
     }
   </style>
 </head>
 <body>
-  <header>WANNA TEST UR CPS powered by Vic.Jr</header>
-  <div id="watermark">PVP pros</div>
-
-  <div id="bloxdGoat">BloxdIzGoat</div>
-  <div id="subscribeBanner">📢 Subscribe to VictoryJr</div>
-
-  <!-- Vic.png logo -->
-  <img id="vicjrLogo" src="Vic.png" alt="Vic Jr Logo">
-
-  <div class="sword1"></div>
-  <div class="sword2"></div>
-
-  <p>Select your test duration and click inside the box!</p>
+  <h1>Welcome to Victory!</h1>
+  <p>Here are the three PNGs displayed correctly:</p>
   
-  <select id="durationSelect">
-    <option value="1">1 second</option>
-    <option value="5" selected>5 seconds</option>
-    <option value="10">10 seconds</option>
-    <option value="15">15 seconds</option>
-    <option value="30">30 seconds</option>
-  </select>
-  
-  <div id="clickArea">Click Me!</div>
-  <div id="timer"></div>
-  <div id="results"></div>
-  <div id="leaderboard">🏆 Highest CPS: 0</div>
-  <button id="restartBtn">Restart</button>
-
-  <script>
-    let clicks = 0;
-    let timerStarted = false;
-    let timeLeft;
-    let countdownInterval;
-    let duration;
-    let highestCPS = 0;
-
-    const clickArea = document.getElementById("clickArea");
-    const results = document.getElementById("results");
-    const timerDisplay = document.getElementById("timer");
-    const restartBtn = document.getElementById("restartBtn");
-    const durationSelect = document.getElementById("durationSelect");
-    const leaderboard = document.getElementById("leaderboard");
-
-    clickArea.addEventListener("click", () => {
-      if (!timerStarted) {
-        startTest();
-      }
-      if (timerStarted) {
-        clicks++;
-      }
-    });
-
-    restartBtn.addEventListener("click", () => {
-      resetTest();
-    });
-
-    function startTest() {
-      duration = parseInt(durationSelect.value);
-      timerStarted = true;
-      clicks = 0;
-      timeLeft = duration;
-      results.textContent = "";
-      restartBtn.style.display = "none";
-      clickArea.style.pointerEvents = "auto";
-      timerDisplay.textContent = `Time left: ${timeLeft}s`;
-
-      countdownInterval = setInterval(() => {
-        timeLeft--;
-        timerDisplay.textContent = `Time left: ${timeLeft}s`;
-        if (timeLeft <= 0) {
-          endTest();
-        }
-      }, 1000);
-    }
-
-    function endTest() {
-      clearInterval(countdownInterval);
-      let cps = (clicks / duration).toFixed(2);
-      let rank = getRank(cps);
-      let message = getMessage(cps);
-      results.textContent = `Time's up! You clicked ${clicks} times. CPS: ${cps} → Rank: ${rank}. ${message}`;
-      timerStarted = false;
-      clickArea.style.pointerEvents = "none"; 
-      restartBtn.style.display = "inline-block";
-
-      if (cps > highestCPS) {
-        highestCPS = cps;
-        leaderboard.textContent = `🏆 Highest CPS: ${highestCPS}`;
-      }
-    }
-
-    function resetTest() {
-      clicks = 0;
-      timerStarted = false;
-      timerDisplay.textContent = "";
-      results.textContent = "";
-      clickArea.style.pointerEvents = "auto"; 
-      restartBtn.style.display = "none";
-    }
-
-    function getRank(cps) {
-      if (cps < 2) return "🦥 Sloth";
-      else if (cps < 4) return "🐢 Turtle";
-      else if (cps < 6) return "🐇 Rabbit";
-      else if (cps < 8) return "🦊 Fox";
-      else return "🐆 Cheetah";
-    }
-
-    function getMessage(cps) {
-      if (cps < 2) return "Don’t be a loser, try again!";
-      else if (cps < 4) return "Keep practicing, you’re improving!";
-      else if (cps < 6) return "Nice work, you’re getting faster!";
-      else if (cps < 8) return "Great speed, you’re a PVP pro!";
-      else return "Insane! You’re a true Cheetah!";
-    }
-  </script>
+  <div class="images">
+    <img src="Vic.png" alt="Vic Image">
+    <img src="Bloxd1.png" alt="Bloxd1 Image">
+    <img src="bloxd.png" alt="Bloxd Image">
+  </div>
 </body>
 </html>
