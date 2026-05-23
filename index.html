@@ -1,7 +1,8 @@
+
 <!DOCTYPE html>
 <html>
 <head>
-  <title>VictoryCPS Tester</title>
+  <title>CPS Tester</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -129,10 +130,121 @@
   </style>
 </head>
 <body>
-  <header>VictoryCPS Tester powered by Vic.Jr</header>
+  <header>WANNA TEST UR CPS powered by Vic.Jr</header>
   <div id="watermark">PVP pros</div>
 
   <div id="bloxdGoat">BloxdIzGoat</div>
   <div id="subscribeBanner">📢 Subscribe to VictoryJr</div>
 
   <!-- Vic.png logo -->
+  <img id="vicjrLogo" src="Vic.png" alt="Vic Jr Logo">
+
+  <div class="sword1"></div>
+  <div class="sword2"></div>
+
+  <p>Select your test duration and click inside the box!</p>
+  
+  <select id="durationSelect">
+    <option value="1">1 second</option>
+    <option value="5" selected>5 seconds</option>
+    <option value="10">10 seconds</option>
+    <option value="15">15 seconds</option>
+    <option value="30">30 seconds</option>
+  </select>
+  
+  <div id="clickArea">Click Me!</div>
+  <div id="timer"></div>
+  <div id="results"></div>
+  <div id="leaderboard">🏆 Highest CPS: 0</div>
+  <button id="restartBtn">Restart</button>
+
+  <script>
+    let clicks = 0;
+    let timerStarted = false;
+    let timeLeft;
+    let countdownInterval;
+    let duration;
+    let highestCPS = 0;
+
+    const clickArea = document.getElementById("clickArea");
+    const results = document.getElementById("results");
+    const timerDisplay = document.getElementById("timer");
+    const restartBtn = document.getElementById("restartBtn");
+    const durationSelect = document.getElementById("durationSelect");
+    const leaderboard = document.getElementById("leaderboard");
+
+    clickArea.addEventListener("click", () => {
+      if (!timerStarted) {
+        startTest();
+      }
+      if (timerStarted) {
+        clicks++;
+      }
+    });
+
+    restartBtn.addEventListener("click", () => {
+      resetTest();
+    });
+
+    function startTest() {
+      duration = parseInt(durationSelect.value);
+      timerStarted = true;
+      clicks = 0;
+      timeLeft = duration;
+      results.textContent = "";
+      restartBtn.style.display = "none";
+      clickArea.style.pointerEvents = "auto";
+      timerDisplay.textContent = `Time left: ${timeLeft}s`;
+
+      countdownInterval = setInterval(() => {
+        timeLeft--;
+        timerDisplay.textContent = `Time left: ${timeLeft}s`;
+        if (timeLeft <= 0) {
+          endTest();
+        }
+      }, 1000);
+    }
+
+    function endTest() {
+      clearInterval(countdownInterval);
+      let cps = (clicks / duration).toFixed(2);
+      let rank = getRank(cps);
+      let message = getMessage(cps);
+      results.textContent = `Time's up! You clicked ${clicks} times. CPS: ${cps} → Rank: ${rank}. ${message}`;
+      timerStarted = false;
+      clickArea.style.pointerEvents = "none"; 
+      restartBtn.style.display = "inline-block";
+
+      if (cps > highestCPS) {
+        highestCPS = cps;
+        leaderboard.textContent = `🏆 Highest CPS: ${highestCPS}`;
+      }
+    }
+
+    function resetTest() {
+      clicks = 0;
+      timerStarted = false;
+      timerDisplay.textContent = "";
+      results.textContent = "";
+      clickArea.style.pointerEvents = "auto"; 
+      restartBtn.style.display = "none";
+    }
+
+    function getRank(cps) {
+      if (cps < 2) return "🦥 Sloth";
+      else if (cps < 4) return "🐢 Turtle";
+      else if (cps < 6) return "🐇 Rabbit";
+      else if (cps < 8) return "🦊 Fox";
+      else return "🐆 Cheetah";
+    }
+
+    function getMessage(cps) {
+      if (cps < 2) return "Don’t be a loser, try again!";
+      else if (cps < 4) return "Keep practicing, you’re improving!";
+      else if (cps < 6) return "Nice work, you’re getting faster!";
+      else if (cps < 8) return "Great speed, you’re a PVP pro!";
+      else return "Insane! You’re a true Cheetah!";
+    }
+  </script>
+</body>
+</html>
