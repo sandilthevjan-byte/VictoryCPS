@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>VictoryCPS Tester</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      background-color: black;
+      color: white;
+      overflow: hidden;
+    }
+    header {
+      background-color: #111;
+      padding: 20px;
+      font-size: 24px;
+      font-weight: bold;
+    }
+    #watermark {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 80px;
+      font-weight: bold;
+      color: rgba(255,255,255,0.1);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    #bloxdGoat {
+      font-size: 40px;
+      font-weight: bold;
+      color: #0ff;
+      text-shadow: 0 0 10px #0ff, 0 0 20px #00f;
+      margin-top: 20px;
+    }
+
+    /* Glowing Subscribe banner */
+    #subscribeBanner {
+      font-size: 36px;
+      font-weight: bold;
+      color: red;
+      text-shadow: 0 0 10px red, 0 0 20px orange, 0 0 30px yellow;
+      margin-top: 15px;
+      animation: pulse 1.5s infinite alternate;
+    }
+    @keyframes pulse {
+      from { transform: scale(1); }
+      to { transform: scale(1.1); }
+    }
+
+    .sword1 {
+      position: fixed;
+      top: 40%;
+      left: 5%;
+      width: 200px;
+      height: 200px;
+      background-image: url('bloxd.Png');
+      background-size: contain;
+      background-repeat: no-repeat;
+      animation: glow 2s infinite alternate;
+      z-index: -2;
+    }
+
+    .sword2 {
+      position: fixed;
+      top: 40%;
+      right: 5%;
+      width: 200px;
+      height: 200px;
+      background-image: url('bloxd1.png');
+      background-size: contain;
+      background-repeat: no-repeat;
+      animation: glow 3s infinite alternate;
+      z-index: -2;
+    }
+
+    @keyframes glow {
+      from { filter: drop-shadow(0 0 10px #0ff) drop-shadow(0 0 20px #00f); }
+      to { filter: drop-shadow(0 0 30px #0ff) drop-shadow(0 0 60px #00f); }
+    }
+
+    /* Vic.png logo styling */
+    #vicjrLogo {
+      margin-top: 20px;
+      width: 250px;
+      filter: drop-shadow(0 0 15px #0ff) drop-shadow(0 0 30px #00f);
+    }
+
+    #clickArea {
+      width: 300px;
+      height: 200px;
+      background-color: #222;
+      border: 2px solid #fff;
+      margin: 40px auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 20px;
+      font-weight: bold;
+      color: white;
+    }
+    #results, #timer, #leaderboard {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+    #restartBtn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      display: none;
+      cursor: pointer;
+      background-color: #444;
+      color: white;
+      border: 1px solid #fff;
+    }
+    #durationSelect {
+      margin-top: 20px;
+      font-size: 16px;
+      padding: 5px;
+      background-color: #222;
+      color: white;
+      border: 1px solid #fff;
+    }
+  </style>
+</head>
+<body>
+  <header>VictoryCPS Tester powered by Vic.Jr</header>
+  <div id="watermark">PVP pros</div>
+
+  <div id="bloxdGoat">BloxdIzGoat</div>
+  <div id="subscribeBanner">📢 Subscribe to VictoryJr</div>
+
+  <!-- Vic.png logo -->
